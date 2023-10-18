@@ -1,9 +1,62 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaAngleLeft } from "react-icons/fa";
 import OrderInfo from "./OrderInfo";
+import { useDispatch, useSelector } from "react-redux";
+import { usePostorderMutation } from "../../app/api/userApi";
+import { emptyCart } from "../../app/slices/cartSlice";
 
 const Confirmation = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const info = useSelector((state) => state.details.info);
+  const payment = useSelector((state) => state.details.payment);
+  const user = useSelector((state) => state.auth.user.email);
+  const cart = useSelector((state) => state.cart.cart);
+  const [placeOrder, error] = usePostorderMutation();
+  const totalprice = cart.reduce((acc, item) => acc + item.price * item.quantity, 0) + 50;
+  console.log(cart);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // const order = {
+    //   method: "card",
+    //   items: cart,
+    //   total:
+    //     cart.reduce((acc, item) => acc + item.price * item.quantity, 0) + 50,
+    //   address: info.address,
+    //   user: user,
+    // };
+
+    try {
+      // const response = await placeOrder({
+      //   method: "card",
+      //   items: cart,
+      //   total: totalprice,
+      //   address: info.address,
+      //   user: user,
+      // });
+      const response = await placeOrder({
+        method: "card",
+        items: cart,
+        total: totalprice,
+        address: info.address,
+        user,
+      });
+      console.log(response);
+      if (response.data.success === true ) {
+        console.log("Order placed successfully");
+        dispatch(emptyCart());
+        navigate("/orders");
+      } else {
+        console.log("Error occurred while placing order");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto text-color">
       <div className="flex gap-8 pb-10">
@@ -18,7 +71,7 @@ const Confirmation = () => {
                 <div className="flex items-center space-x-2 px-4 py-2 bg-white rounded-md text-black">
                   <input
                     type="text"
-                    value="+918307242815"
+                    value={info.name}
                     className="w-full outline-none bg-inherit"
                   />
                   <Link to="/payment/info">
@@ -36,7 +89,7 @@ const Confirmation = () => {
                 <div className="flex items-center space-x-2 px-4 py-2 bg-white rounded-md text-black">
                   <input
                     type="text"
-                    value="B-1/2, 2nd Floor, Sector-18, Rohini, Delhi-110089"
+                    value={info.address}
                     className="w-full outline-none bg-inherit"
                   />
                   <Link to="/payment/info">
@@ -57,11 +110,11 @@ const Confirmation = () => {
                     value="Card"
                     className="w-full outline-none bg-inherit"
                   />
-                  <Link to="/payment/gateway">
+                  {/* <Link to="/payment/gateway">
                     <span className="underline text-primary text-md cursor-pointer">
                       Change
                     </span>
-                  </Link>
+                  </Link> */}
                 </div>
               </div>
             </div>
@@ -73,11 +126,14 @@ const Confirmation = () => {
                 <FaAngleLeft /> Return to Payment
               </button>
             </Link>
-            <Link to="" className="w-1/2">
-              <button className="w-full bg-primary p-3 rounded-lg text-lg font-medium flex justify-center items-center gap-1">
+            <div className="w-1/2">
+              <button
+                className="w-full bg-primary p-3 rounded-lg text-lg font-medium flex justify-center items-center gap-1"
+                onClick={handleSubmit}
+              >
                 Pay Now
               </button>
-            </Link>
+            </div>
           </div>
         </div>
 
