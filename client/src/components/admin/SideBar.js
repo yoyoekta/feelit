@@ -18,12 +18,12 @@ const SideBar = () => {
             <span className="">Homepage</span>
           </span>
         </Link>
-        <Link to="/profile">
+        {/* <Link to="/profile">
           <span className="flex items-center space-x-2 p-2 hover:bg-grey hover:rounded-md cursor-pointer">
             <FaUserFriends />
             <span className="">Profile</span>
           </span>
-        </Link>
+        </Link> */}
       </div>
 
       <div className="flex flex-col space-y-2">

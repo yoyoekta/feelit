@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { FaXmark } from "react-icons/fa6";
 import { useAddproductMutation } from "../../../app/api/adminApi";
+import { useNavigate } from "react-router-dom";
 
 const AddProduct = ({ overlayOpen, closeOverlay }) => {
 
-    const [addproduct, {isLoading, error}] = useAddproductMutation();
+    const [addproduct] = useAddproductMutation();
     const [image, setImage] = useState("")
+    const navigate = useNavigate();
 
     const onImageChange = (e) => {
         const file = e.target.files[0]
@@ -36,6 +38,7 @@ const AddProduct = ({ overlayOpen, closeOverlay }) => {
         try{
             const product = await addproduct({name, category, brand, description, image, price, size, qty});
             console.log(product);
+            navigate("/admin/products");
             closeOverlay();
         }
         catch(err){

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AdminNav from "./AdminNav";
 import SideBar from "./SideBar";
 import AddProduct from "./overlays/AddProduct";
@@ -40,6 +40,10 @@ const Products = () => {
   };
 
   const rows = products?.products;
+
+  useEffect (() => {
+    
+  }, [products]);
 
   const columns = [
     { field: "id", headerName: "ID", width: 70 },

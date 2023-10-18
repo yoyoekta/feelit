@@ -3,15 +3,15 @@ import AdminNav from "./AdminNav";
 import SideBar from "./SideBar";
 import { FaPlus, FaTrash } from "react-icons/fa";
 import AddUsers from "./overlays/AddUsers";
-import { useGetusersQuery } from "../../app/api/adminApi";
+import { useGetallordersQuery } from "../../app/api/adminApi";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { FaPencil } from "react-icons/fa6";
 
-const Users = () => {
+const Orders = () => {
   const [open, setOpen] = useState(false);
   const [edit, setEdit] = useState(false);
 
-  const { data: users, isLoading, error } = useGetusersQuery();
+  const { data: orders, isLoading, error } = useGetallordersQuery();
 
   const openOverlay = () => {
     setOpen(true);
@@ -29,26 +29,31 @@ const Users = () => {
     setEdit(false);
   };
 
-  useEffect(() => {}, [users]);
+  useEffect(() => {}, [orders]);
 
-  const rows = users?.users;
-  console.log(users);
+  const rows = orders?.orders;
+  console.log(rows);
 
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
     {
-      field: "username",
-      headerName: "User Name",
+      field: "method",
+      headerName: "Method",
       width: 150,
     },
     {
-      field: "email",
-      headerName: "Email Address",
+      field: "total",
+      headerName: "Total",
       width: 110,
     },
     {
-      field: "role",
-      headerName: "Role",
+      field: "address",
+      headerName: "Address",
+      width: 110,
+    },
+    {
+      field: "user",
+      headerName: "User",
       width: 110,
     },
     {
@@ -77,13 +82,13 @@ const Users = () => {
         <SideBar />
         <div className="w-full text-color">
           <div className="flex justify-between px-6 py-4">
-            <h1 className="text-2xl font-bold">Users</h1>
+            <h1 className="text-2xl font-bold">Orders</h1>
             <button
               className="p-2 bg-slate-400 rounded-md flex items-center space-x-2"
               onClick={() => setOpen(!open)}
             >
               <FaPlus />
-              <span>Add Users</span>
+              <span>Add Orders</span>
             </button>
             {open ? (
               <AddUsers overlayOpen={open} closeOverlay={closeOverlay} />
@@ -128,4 +133,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Orders;
