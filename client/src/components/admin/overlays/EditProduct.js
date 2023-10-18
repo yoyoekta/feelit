@@ -8,10 +8,13 @@ const EditProduct = ({ id, overlayOpen, closeOverlay }) => {
   const [editproduct] = useEditproductMutation();
   console.log(id);
 
-  const product = result?.product;
+  console.log(result);
+  const productdetails = result?.product;
+  console.log(productdetails);
   const [image, setImage] = useState("");
-  const [category, setCategory] = useState(product.category);
-  const [brand, setBrand] = useState(product.brand);
+  // const [name, setname] = useState(productdetails?.name)
+  const [category, setCategory] = useState(productdetails?.category);
+  const [brand, setBrand] = useState(productdetails?.brand);
 
   const onImageChange = (e) => {
     const file = e.target.files[0];
@@ -42,7 +45,7 @@ const EditProduct = ({ id, overlayOpen, closeOverlay }) => {
   const handleAdd = async (e) => {
     e.preventDefault();
     const name = e.target[0].value;
-    // const category = e.target[1].value;
+    const category = e.target[1].value;
     const brand = e.target[2].value;
     const description = e.target[3].value;
     const price = e.target[5].value;
@@ -98,7 +101,7 @@ const EditProduct = ({ id, overlayOpen, closeOverlay }) => {
                         type="text"
                         placeholder="Enter product name"
                         className="rounded-lg p-2 text-black"
-                        value={product.name}
+                        value={productdetails.name}
                       />
                     </div>
                   </div>
@@ -140,7 +143,7 @@ const EditProduct = ({ id, overlayOpen, closeOverlay }) => {
                         placeholder="Enter product description"
                         rows={3}
                         className="rounded-lg p-2 text-black"
-                        value={product.description}
+                        value={productdetails.description}
                       />
                     </div>
                   </div>
@@ -163,7 +166,7 @@ const EditProduct = ({ id, overlayOpen, closeOverlay }) => {
                         type="text"
                         placeholder="Enter product price"
                         className="rounded-lg p-2 text-black"
-                        value={product.price}
+                        value={productdetails.price}
                       />
                     </div>
                     <div className="w-full flex flex-col space-y-2">
@@ -174,7 +177,7 @@ const EditProduct = ({ id, overlayOpen, closeOverlay }) => {
                         type="text"
                         placeholder="Enter product size"
                         className="rounded-lg p-2 text-black"
-                        value={product.size}
+                        value={productdetails.size}
                       />
                     </div>
                     <div className="w-full flex flex-col space-y-2">
@@ -183,7 +186,7 @@ const EditProduct = ({ id, overlayOpen, closeOverlay }) => {
                         type="text"
                         placeholder="Enter quantity"
                         className="rounded-lg p-2 text-black"
-                        value={product.qty}
+                        value={productdetails.qty}
                       />
                     </div>
                   </div>

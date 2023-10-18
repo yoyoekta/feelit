@@ -1,11 +1,91 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import NavBar from "../layout/Navbar";
-import { FaHeart, FaSearch } from "react-icons/fa";
-import { useGetproductsQuery } from "../../app/api/userApi";
-import { Link } from "react-router-dom";
+import { FaSearch } from "react-icons/fa";
+import {
+  useGetfilteredProdsQuery,
+  useGetproductsQuery,
+  useGetproductsbyBrandQuery,
+  useGetproductsbyCategoryQuery,
+} from "../../app/api/userApi";
+import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addFilters } from "../../app/slices/userSlice";
+import ProductView from "./ProductView";
 
 const Explore = () => {
-  const { data: products, isLoading, error } = useGetproductsQuery();
+  const { data: products, isLoading } = useGetproductsQuery();
+  const [search, setSearch] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [filters, setFilters] = useState({
+    category: [],
+    brand: [],
+  });
+
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const params = new URLSearchParams();
+
+  const searchHandler = (search, products, setSearchResults) => {
+    if (search === "") {
+      setSearchResults([]);
+    }
+    if (search === null || search === "") return;
+    setSearchResults([]);
+    let results = [];
+    const pattern = new RegExp(search, "gi");
+    for (const product of products.products) {
+      const productName = product.name;
+      const productCategory = product.category;
+      const productBrand = product.brand;
+      if (
+        productName.match(pattern) ||
+        productCategory.match(pattern) ||
+        productBrand.match(pattern)
+      ) {
+        results.push(product);
+      }
+    }
+    setSearchResults(results);
+  };
+
+  const handleCategoryFilter = (e) => {
+    if (e.target.checked) {
+      setFilters((prev) => ({
+        ...prev,
+        category: [...prev.category, e.target.id],
+      }));
+    } else {
+      setFilters((prev) => ({
+        ...prev,
+        category: prev.category.filter((cat) => cat !== e.target.id),
+      }));
+    }
+  };
+
+  const handleBrandFilter = (e) => {
+    if (e.target.checked) {
+      setFilters((prev) => ({ ...prev, brand: [...prev.brand, e.target.id] }));
+    } else {
+      setFilters((prev) => ({
+        ...prev,
+        brand: prev.brand.filter((br) => br !== e.target.id),
+      }));
+    }
+  };
+
+  dispatch(addFilters(filters));
+  const { data: filteredProds } = useGetfilteredProdsQuery(filters);
+
+  const currentCategory = queryParams.get("category");
+  const currentBrand = queryParams.get("brand");
+
+  const { data: catprods, isLoading: loading } =
+    useGetproductsbyCategoryQuery(currentCategory);
+  const { data: brandprods, loadBrand } =
+    useGetproductsbyBrandQuery(currentBrand);
+
+  // console.log(catprods);
 
   return (
     <div className="bg-bgcolor min-h-screen">
@@ -19,6 +99,10 @@ const Explore = () => {
           type="text"
           placeholder="Find your fragrance type"
           className="w-full outline-none bg-inherit px-4 placeholder:font-medium"
+          onChange={(e) => setSearch(e.target.value)}
+          onKeyUp={(e) =>
+            searchHandler(e.target.value, products, setSearchResults)
+          }
           required
         />
         <FaSearch className="text-color font-medium m-1 left-1" />
@@ -28,85 +112,177 @@ const Explore = () => {
         <div className="ml-2 basis-1/5 border-r border-grey-100 text-secondary pl-8">
           <h3 className="text-xl font-bold text-primary">Filters</h3>
           <h4 className="text-lg font-bold mt-4">Categories</h4>
-          <ul className="mt-2">
-            <li>Perfumes</li>
-            <li>Deodorants</li>
-            <li>Room Fresheners</li>
-            <li>Attars</li>
-            <li>Combos</li>
-          </ul>
+          <div className="mt-2">
+            <input
+              type="checkbox"
+              className="mr-2 w-4 h-4 accent-primary"
+              id="Perfume"
+              onChange={handleCategoryFilter}
+            />
+            <label for="Perfume">Perfumes</label>
+          </div>
+          <div className="mt-2">
+            <input
+              type="checkbox"
+              className="mr-2 w-4 h-4 accent-primary"
+              id="Deodorant"
+              onChange={handleCategoryFilter}
+            />
+            <label for="Deodorant">Deodorants</label>
+          </div>
+          <div className="mt-2">
+            <input
+              type="checkbox"
+              className="mr-2 w-4 h-4 accent-primary"
+              id="Room Freshener"
+              onChange={handleCategoryFilter}
+            />
+            <label for="Room Freshener">Room Fresheners</label>
+          </div>
+          <div className="mt-2">
+            <input
+              type="checkbox"
+              className="mr-2 w-4 h-4 accent-primary"
+              id="Attar"
+              onChange={handleCategoryFilter}
+            />
+            <label for="Attar">Attars</label>
+          </div>
+          <div className="mt-2">
+            <input
+              type="checkbox"
+              className="mr-2 w-4 h-4 accent-primary"
+              id="Combo"
+              onChange={handleCategoryFilter}
+            />
+            <label for="Combo">Combos</label>
+          </div>
 
           <h4 className="text-lg font-bold mt-4">Brands</h4>
-          <ul className="mt-2">
-            <li className="cursor-pointer">AeroCare</li>
-            <li>Viwa</li>
-            <li>S&P</li>
-            <li>OSSA</li>
-            <li>OSR</li>
-            <li>WindSong</li>
-          </ul>
+          <div className="mt-2">
+            <input
+              type="checkbox"
+              className="mr-2 w-4 h-4 accent-primary"
+              id="AeroCare"
+              onChange={handleBrandFilter}
+            />
+            <label for="AeroCare">AeroCare</label>
+          </div>
+          <div className="mt-2">
+            <input
+              type="checkbox"
+              className="mr-2 w-4 h-4 accent-primary"
+              id="Viwa"
+              onChange={handleBrandFilter}
+            />
+            <label for="Viwa">Viwa</label>
+          </div>
+          <div className="mt-2">
+            <input
+              type="checkbox"
+              className="mr-2 w-4 h-4 accent-primary"
+              id="S&P"
+              onChange={handleBrandFilter}
+            />
+            <label for="S&P">S&P</label>
+          </div>
+          <div className="mt-2">
+            <input
+              type="checkbox"
+              className="mr-2 w-4 h-4 accent-primary"
+              id="OSSA"
+              onChange={handleBrandFilter}
+            />
+            <label for="OSSA">OSSA</label>
+          </div>
+          <div className="mt-2">
+            <input
+              type="checkbox"
+              className="mr-2 w-4 h-4 accent-primary"
+              id="OSR"
+              onChange={handleBrandFilter}
+            />
+            <label for="OSR">OSR</label>
+          </div>
+          <div className="mt-2">
+            <input
+              type="checkbox"
+              className="mr-2 w-4 h-4 accent-primary"
+              id="WindSong"
+              onChange={handleBrandFilter}
+            />
+            <label for="WindSong">WindSong</label>
+          </div>
         </div>
 
-        <div className="basis-4/5 grid grid-cols-4 text-color">
-          {isLoading ? (
+        <div className="basis-4/5 grid grid-cols-4 text-color justify-center items-center gap-5 space-y-4 lg:space-y-0">
+          {currentBrand &&
+          filters.category.length === 0 &&
+          filters.brand.length === 0 ? (
+            loadBrand ? (
+              <div> Loading products! </div>
+            ) : brandprods?.products?.length > 0 ? (
+              brandprods?.products?.map((product, index) => {
+                return (
+                  <div className="grid grid-cols-1 bg-bgcolor my-4 text-color">
+                    <ProductView product={product} key={index} />
+                  </div>
+                );
+              })
+            ) : (
+              <div>No products found!</div>
+            )
+          ) : currentCategory &&
+            filters.brand.length === 0 &&
+            filters.category.length === 0 ? (
+            loading ? (
+              <div> Loading products! </div>
+            ) : catprods?.products?.length > 0 ? (
+              catprods?.products?.map((product, index) => {
+                return (
+                  <div className="grid grid-cols-1 bg-bgcolor my-4 text-color">
+                    <ProductView product={product} key={index} />
+                  </div>
+                );
+              })
+            ) : (
+              <div>No products found!</div>
+            )
+          ) : isLoading ? (
             <div> Products are getting loaded! </div>
+          ) : search?.length > 0 ? (
+            searchResults?.length > 0 ? (
+              searchResults.map((product, index) => {
+                return (
+                  <div className="grid grid-cols-1 bg-bgcolor my-4 text-color">
+                    <ProductView product={product} key={index} />
+                  </div>
+                );
+              })
+            ) : (
+              <div> No results found! </div>
+            )
+          ) : filters.brand.length > 0 || filters.category.length > 0 ? (
+            filteredProds?.products?.length > 0 ? (
+              filteredProds?.products?.map((product, index) => {
+                return (
+                  <div className="grid grid-cols-1 bg-bgcolor my-4 text-color">
+                    <ProductView product={product} key={index} />
+                  </div>
+                );
+              })
+            ) : (
+              <div>No results found!</div>
+            )
           ) : (
-            products.products.map((product, index) => {
+            products?.products?.map((product, index) => {
               return (
-                <div
-                  className="flex flex-col lg:flex-row bg-bgcolor my-4 justify-center items-center text-color space-y-4 lg:space-y-0"
-                  key={index}
-                >
-                  <Link to={"/explore/" + product._id}>
-                    <div className="p-2 flex flex-col items-center bg-color rounded-xl text-grey cursor-pointer">
-                      <div className="relative">
-                        <img
-                          src={product.image.secure_url}
-                          className="h-50 sm:w-60 sm:h-75 rounded-xl sm:m-1"
-                        />
-                        <div className="absolute h-10 w-10 top-0 right-0 sm:m-1 flex items-center justify-center bg-secondary rounded-tr-lg rounded-bl-lg">
-                          <FaHeart className="text-2xl text-primary" />
-                        </div>
-                        <h4 className="font-bold text-lg sm:text-xl lg:text-2xl font-serif mt-3 ml-1">
-                          {product.name}
-                        </h4>
-                        <p className="ml-1 my-1">
-                          <span className="text-primary font-bold text-lg">
-                           ₹ {product.price}
-                          </span>
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
+                <div className="grid grid-cols-1 bg-bgcolor my-4 text-color">
+                  <ProductView product={product} key={index} />
                 </div>
               );
             })
           )}
-
-          {/* {!isLoading && products.products.map((product, index) => {
-            {console.log(product)}
-            <div className="flex flex-col lg:flex-row bg-bgcolor my-4 justify-center items-center text-color space-y-4 lg:space-y-0" key={index}>
-              <div className="p-2 flex flex-col items-center bg-color rounded-xl text-grey">
-                <div className="relative">
-                  <img
-                    src={product.image.secure_url}
-                    className="h-50 sm:w-60 sm:h-75 rounded-xl sm:m-1"
-                  />
-                  <div className="absolute h-10 w-10 top-0 right-0 sm:m-1 flex items-center justify-center bg-secondary rounded-tr-lg rounded-bl-lg">
-                    <FaHeart className="text-2xl text-primary" />
-                  </div>
-                  <h4 className="font-bold text-lg sm:text-xl lg:text-2xl font-serif mt-3 ml-1">
-                    {product.name}
-                  </h4>
-                  <p className="ml-1 my-1">
-                    <span className="text-primary font-bold text-lg">
-                      {product.price}
-                    </span>
-                  </p>
-                </div>
-              </div>
-            </div>;
-          })} */}
         </div>
       </div>
     </div>

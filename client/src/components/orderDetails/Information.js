@@ -1,24 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaAngleLeft } from "react-icons/fa";
 import { FaAnglesRight } from "react-icons/fa6";
 import CartInfo from "./CartInfo";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setDetails } from "../../app/slices/detailsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setInfo } from "../../app/slices/detailsSlice";
 
 const Information = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const info = useSelector((state) => state.details.info);
+  const [details, setDetails] = useState(info);
+  console.log(details);
+
   const goToGateway = (e) => {
     e.preventDefault();
-    const name = e.target[0].value;
-    const phone = e.target[1].value;
-    const address = e.target[2].value;
-    const pincode = e.target[3].value;
     
-    dispatch(setDetails({ details: { name, phone, address, pincode } }));
+    dispatch(setInfo({ info : details }));
     navigate("/payment/gateway");
   };
 
@@ -34,6 +34,8 @@ const Information = () => {
                   <label className="text-normal font-medium">Full Name</label>
                   <input
                     type="text"
+                    value={details.name}
+                    onChange={(e) => setDetails({ ...details, name: e.target.value })}
                     placeholder="Enter your full name"
                     className="border-2 border-grey rounded-md h-10 p-2 mt-1 text-black"
                     required
@@ -46,6 +48,8 @@ const Information = () => {
                   </label>
                   <input
                     type="tel"
+                    value={details.phone}
+                    onChange={(e) => setDetails({ ...details, phone: e.target.value })}
                     minLength={10}
                     maxLength={10}
                     placeholder="Enter your phone number"
@@ -58,6 +62,8 @@ const Information = () => {
                   <label className="text-normal font-medium">Address</label>
                   <input
                     type="text"
+                    value={details.address}
+                    onChange={(e) => setDetails({ ...details, address: e.target.value })}
                     placeholder="Enter your complete address"
                     className="border-2 border-grey rounded-md h-10 p-2 mt-1 text-black"
                     required
@@ -68,6 +74,8 @@ const Information = () => {
                   <label className="text-normal font-medium">Pin Code</label>
                   <input
                     type="pin-code"
+                    value={details.pincode}
+                    onChange={(e) => setDetails({ ...details, pincode: e.target.value })}
                     minLength={6}
                     maxLength={6}
                     placeholder="Enter your pin code"
