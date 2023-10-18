@@ -1,5 +1,6 @@
 const express = require('express')
-const { getProducts, getProductsById, getProductsByCategory, getProductsByBrand } = require('../controllers/users')
+const {checkAuthenticated} = require('../middlewares/checkAdmin') 
+const { getProducts, getProductsById, getProductsByCategory, getProductsByBrand, getOrders, postOrder, getOrderById } = require('../controllers/users')
 const router = express.Router()
 
 // Routes
@@ -8,5 +9,8 @@ router.get('/allProducts', getProducts)
 router.get('/products/:id', getProductsById)
 router.get('/products/category/:category', getProductsByCategory)
 router.get('/products/brand/:brand', getProductsByBrand)
+router.get('/orders/:email', getOrders)
+router.get('/orders/order/:id', getOrderById)
+router.post('/post/order', postOrder)
 
 module.exports = router

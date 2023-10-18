@@ -13,21 +13,22 @@ const cartSlice = createSlice({
       state.cart = cart;
     },
     addToCart: (state, action) => {
-      const { product } = action.payload;
-      console.log({product})
-      const item = state.cart.find((item) => item._id === product._id);
+      const { name, brand, size, price, quantity, image, product } = action.payload;
+      console.log(name, price, quantity, image, product);
+      const item = state.cart.find((item) => item.product === product);
       if (item) {
         item.quantity++;
-      } else {
-        state.cart.push({ ...product, quantity: 1 });
+      }
+      else {
+        state.cart.push({...state.cart, name, brand, size, price, quantity, image, product});
       }
       localStorage.setItem("cart", JSON.stringify(state.cart));
     },
     removeFromCart: (state, action) => {
       const { product } = action.payload;
-      const item = state.cart.find((item) => item._id === product._id);
+      const item = state.cart.find((item) => item.product === product);
       if (item.quantity === 1) {
-        state.cart = state.cart.filter((item) => item._id !== product._id);
+        state.cart = state.cart.filter((item) => item.product !== product);
       } else {
         item.quantity--;
       }
@@ -35,7 +36,7 @@ const cartSlice = createSlice({
     },
     deleteFromCart: (state, action) => {
       const { product } = action.payload;
-      state.cart = state.cart.filter((item) => item._id !== product._id);
+      state.cart = state.cart.filter((item) => item.product !== product);
       localStorage.setItem("cart", JSON.stringify(state.cart));
     },
     emptyCart: (state) => {
@@ -51,5 +52,3 @@ export const { setCart, addToCart, removeFromCart, deleteFromCart, emptyCart } =
 export default cartSlice.reducer;
 
 export const selectCart = (state) => state.cart.cart;
-export const selectTotal = (state) => state.cart.total;
-export const selectTotalItems = (state) => state.cart.totalItems;
