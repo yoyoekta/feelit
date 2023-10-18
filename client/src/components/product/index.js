@@ -8,16 +8,24 @@ import { addToCart } from "../../app/slices/cartSlice";
 const Product = () => {
   const id = useParams();
   const dispatch = useDispatch();
-  console.log(id.id);
 
   const { data: result, isLoading, error } = useGetproductsbyIdQuery(id.id);
   const product = result?.product;
-  console.log(result?.product);
 
   const [disable, setDisable] = React.useState(false);
+  
 
   const handleCart = () => {
-    dispatch(addToCart({ product }));
+    const itemToAdd = {
+      name: product.name,
+      brand: product.brand,
+      size: product.size,
+      price: product.price,
+      quantity: 1,
+      image: product.image.url,
+      product: product._id,
+    }
+    dispatch(addToCart(itemToAdd));
   };
 
   return (
@@ -59,10 +67,7 @@ const Product = () => {
                 </p>
                 <div className="flex flex-row items-center space-x-2">
                   <button className="bg-inherit border border-primary text-secondary font-bold py-2 px-4 rounded-full">
-                    100
-                  </button>
-                  <button className="bg-inherit border border-primary text-secondary font-bold py-2 px-4 rounded-full">
-                    200
+                    {product.size}
                   </button>
                 </div>
               </div>
@@ -73,7 +78,8 @@ const Product = () => {
                     Buy Now
                   </button>
                   <button
-                    className="bg-inherit text-primary border-2 border-primary font-semibold py-2 px-4 rounded-lg" disabled={disable}
+                    className="bg-inherit text-primary border-2 border-primary font-semibold py-2 px-4 rounded-lg"
+                    disabled={disable}
                     onClick={() => {
                       handleCart();
                       setDisable(true);
