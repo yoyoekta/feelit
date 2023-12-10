@@ -10,6 +10,18 @@ const userApi = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getfilteredProds: build.query({
+      query: (filters) => {
+        const params = new URLSearchParams();
+        for (const key in filters) {
+          if (filters[key]) {
+            params.append(key, filters[key]);
+          }
+        }
+        // console.log("params are" + params);
+        return `/users/allProducts?${params.toString()}`;
+      },
+    }),
     getproductsbyId: build.query({
       query: (id) => ({
         url: USERS_URL + "/products/" + id,
@@ -32,4 +44,14 @@ const userApi = apiSlice.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useGetproductsQuery, useGetproductsbyIdQuery,  useGetproductsbyCategoryQuery, useGetproductsbyBrandQuery} = userApi;
+export const {
+  useGetproductsQuery,
+  useGetfilteredProdsQuery,
+  useGetproductsbyIdQuery,
+  useGetproductsbyCategoryQuery,
+  useGetproductsbyBrandQuery,
+  useGetordersQuery,
+  usePostorderMutation,
+  useGetorderByIdQuery,
+  useCompleteCheckoutMutation,
+} = userApi;

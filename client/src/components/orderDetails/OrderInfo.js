@@ -1,8 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 const OrderInfo = () => {
   const cartItems = useSelector((state) => state.cart.cart);
+  const [total, setTotal] = useState(0);
+  const [subtotal, setSubtotal] = useState(0);
+  const [promo, setPromo] = useState(false);
+  const [shipping, setShipping] = useState(0);
+  const [discount, setDiscount] = useState(0);
+
+  useEffect(() => {
+    setSubtotal(cartItems.reduce((acc, item) => acc + item.price*item.quantity, 0));
+    setShipping( subtotal ? 50 : 0);
+    setDiscount(promo ? 50 : 0);
+    setTotal(subtotal + shipping - discount);
+  }, [cartItems, promo, total, subtotal, shipping, discount]);
 
   return (
     <div className="px-8 pt-4 pb-10 ml-16 border-2 border-primary rounded-lg">
@@ -13,7 +25,7 @@ const OrderInfo = () => {
             <div className="grid grid-cols-5 bg-color text-black rounded-md" key={index}>
               <div className="col-span-1 p-2 pr-0">
                 <img
-                  src={item.image.url}
+                  src={item.image}
                   alt="image"
                   className="rounded-md h-full w-full"
                 ></img>
@@ -36,20 +48,20 @@ const OrderInfo = () => {
         <div className="text-lg font-normal">
           <div className="flex justify-between m-2">
             <p>Subtotal</p>
-            <p className="text-slate-300">₹ 750</p>
+            <p className="text-slate-300">₹ {subtotal}</p>
           </div>
           <div className="flex justify-between m-2">
             <p>Shipping</p>
-            <p className="text-slate-300">₹ 50</p>
+            <p className="text-slate-300">₹ {shipping}</p>
           </div>
           <div className="flex justify-between m-2">
             <p>Discount</p>
-            <p className="text-slate-300">₹ 50</p>
+            <p className="text-slate-300">₹ {discount}</p>
           </div>
           <hr className="my-2" />
           <div className="flex justify-between m-2">
             <p className="text-lg font-semibold">Total</p>
-            <p className="text-lg font-semibold text-primary">₹ 800</p>
+            <p className="text-lg font-semibold text-primary">₹ {total}</p>
           </div>
         </div>
       </div>

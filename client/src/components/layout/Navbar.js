@@ -44,25 +44,25 @@ export default function NavBar() {
                   Categories
                   <div className="absolute -left-4 hidden group-hover:block z-10">
                     <Link
-                      to=""
+                      to="/explore?category=Perfume"
                       className="block bg-gray-200 border border-gray-300 text-black px-4 py-2 hover:bg-gray-300"
                     >
                       Perfume
                     </Link>
                     <Link
-                      to=""
+                      to="/explore?category=Deodorant"
                       className="block bg-gray-200 border border-gray-300 text-black px-4 py-2 hover:bg-gray-300"
                     >
                       Deodorant
                     </Link>
                     <Link
-                      to=""
+                      to="/explore?category=Room+Freshener"
                       className="block bg-gray-200 border border-gray-300 text-black px-4 py-2 hover:bg-gray-300"
                     >
                       Room Freshener
                     </Link>
                     <Link
-                      to=""
+                      to="/explore?category=Attar"
                       className="block bg-gray-200 border border-gray-300 text-black px-4 py-2 hover:bg-gray-300"
                     >
                       Attar
@@ -73,37 +73,37 @@ export default function NavBar() {
                   Brands
                   <div className="absolute -left-4 hidden group-hover:block z-10">
                     <Link
-                      to=""
+                      to="/explore?brand=AeroCare"
                       className="block bg-gray-200 border border-gray-300 text-black px-4 py-2 hover:bg-gray-300"
                     >
                       AeroCare
                     </Link>
                     <Link
-                      to=""
+                      to="/explore?brand=Viwa"
                       className="block bg-gray-200 border border-gray-300 text-black px-4 py-2 hover:bg-gray-300"
                     >
                       Viwa
                     </Link>
                     <Link
-                      to=""
+                      to="/explore?brand=S&P"
                       className="block bg-gray-200 border border-gray-300 text-black px-4 py-2 hover:bg-gray-300"
                     >
                       S&P
                     </Link>
                     <Link
-                      to=""
+                      to="/explore?brand=OSSA"
                       className="block bg-gray-200 border border-gray-300 text-black px-4 py-2 hover:bg-gray-300"
                     >
                       OSSA
                     </Link>
                     <Link
-                      to=""
+                      to="/explore?brand=OSR"
                       className="block bg-gray-200 border border-gray-300 text-black px-4 py-2 hover:bg-gray-300"
                     >
                       OSR
                     </Link>
                     <Link
-                      to=""
+                      to="/explore?brand=WindSong"
                       className="block bg-gray-200 border border-gray-300 text-black px-4 py-2 hover:bg-gray-300"
                     >
                       WindSong
@@ -119,35 +119,11 @@ export default function NavBar() {
             </div>
 
             <div className="flex justify-center space-x-2 md:space-x-6 items-center mr-1">
-              <FaSearch
-                className="text-secondary text-2xl cursor-pointer"
-                onClick={() => setOpen(!open)}
-              />
-              { open ? (
-                <div className="fixed inset-0 flex items-center justify-center z-50">
-                {/* Overlay */}
-                <div className="absolute -inset-8 bg-grey opacity-75"></div>
-      
-                {/* Dialog */}
-                <div
-                  className="max-w-xl mx-auto relative bottom-1/4 p-6 bg-bgcolor text-color shadow-lg rounded w-full"
-                >
-                  <div className="m-2">
-                    <button onClick={() => setOpen(false)}>
-                    <FaXmark className="absolute top-2 right-2 text-base inline-block"/>
-                    </button>
-                    <input
-                      type="text"
-                      id="inputField"
-                      placeholder="Search..."
-                      className="mt-1 px-3 py-2 w-full border border-grey rounded-md bg-inherit"
-                    />
-                  </div>
-                </div>
-              </div>
-              ) : ""}
-              <NavLink to="/payment/info">
-              <IoMdCart className="text-secondary text-2xl cursor-pointer" />
+              <NavLink to="/explore">
+                <FaSearch className="text-secondary text-2xl cursor-pointer" />
+              </NavLink>
+              <NavLink to="/cart">
+                <IoMdCart className="text-secondary text-2xl cursor-pointer" />
               </NavLink>
               {!isAuthenticated ? (
                 <Link to="/auth/login">
@@ -159,25 +135,25 @@ export default function NavBar() {
                   </button>
                 </Link>
               ) : (
-                <div
-                  className="relative group inline-block text-secondary cursor-pointer text-xl self-start font-medium"
-                >
-                  <FaUser className="m-1"/>
+                <div className="relative group inline-block text-secondary cursor-pointer text-xl self-start font-medium">
+                  <FaUser className="m-1" />
                   <div className="absolute top-7 -left-4 hidden group-hover:block z-10 text-base">
-                    <Link
+                    {/* <Link
                       to=""
                       className="block bg-gray-200 border border-gray-300 text-black px-4 py-2 hover:bg-gray-300"
                     >
                       Profile
-                    </Link>
+                    </Link> */}
                     {isAuthenticated.role === "admin" ? (
-                    <Link
-                      to="/admin"
-                      className="block bg-gray-200 border border-gray-300 text-black px-4 py-2 hover:bg-gray-300"
-                    >
-                      Admin Dashboard
-                    </Link>
-                    ) : ""}
+                      <Link
+                        to="/admin"
+                        className="block bg-gray-200 border border-gray-300 text-black px-4 py-2 hover:bg-gray-300"
+                      >
+                        Admin Dashboard
+                      </Link>
+                    ) : (
+                      ""
+                    )}
                     <Link
                       to="/cart"
                       className="block bg-gray-200 border border-gray-300 text-black px-4 py-2 hover:bg-gray-300"
@@ -185,7 +161,7 @@ export default function NavBar() {
                       My Cart
                     </Link>
                     <Link
-                      to=""
+                      to="/orders"
                       className="block bg-gray-200 border border-gray-300 text-black px-4 py-2 hover:bg-gray-300"
                     >
                       My&nbsp;Orders

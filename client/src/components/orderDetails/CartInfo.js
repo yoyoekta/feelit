@@ -11,8 +11,7 @@ const CartInfo = () => {
 
   const dispatch = useDispatch();
 
-  const cartItems = useSelector((state) => state.cart.cart)
-  // console.log(cartItems)
+  const cartItems = useSelector((state) => state.cart.cart);
 
   const handleDelete = (item) => {
     dispatch(deleteFromCart({product: item}));
@@ -36,7 +35,7 @@ const CartInfo = () => {
         <div className="grid grid-cols-5 bg-color text-black rounded-md" key={index}>
           <div className="col-span-1 p-2 pr-0">
             <img
-              src={item.image.url}
+              src={item.image}
               alt="image"
               className="rounded-md h-full w-full"
             ></img>

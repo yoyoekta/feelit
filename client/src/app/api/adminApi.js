@@ -37,8 +37,14 @@ const adminApi = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    getallorders: build.query({
+      query: () => ({
+        url: 'admin/allOrders',
+        method: 'GET',
+      }),
+    }),
   }),
   overrideExisting: false,
 })
 
-export const { useAddproductMutation, useEditproductMutation, useDeleteproductMutation, useAdduserMutation, useGetusersQuery } = adminApi;
+export const { useAddproductMutation, useEditproductMutation, useDeleteproductMutation, useAdduserMutation, useGetusersQuery, useGetallordersQuery } = adminApi;
