@@ -1,3 +1,4 @@
+import { USERS_URL } from "../../constants";
 import { apiSlice } from "./apiSlice";
 
 const userApi = apiSlice.injectEndpoints({
@@ -5,7 +6,7 @@ const userApi = apiSlice.injectEndpoints({
   endpoints: (build) => ({
     getproducts: build.query({
       query: () => ({
-        url: "/users/allProducts",
+        url: USERS_URL + "/allProducts",
         method: "GET",
       }),
     }),
@@ -18,43 +19,43 @@ const userApi = apiSlice.injectEndpoints({
           }
         }
         // console.log("params are" + params);
-        return `/users/allProducts?${params.toString()}`;
+        return USERS_URL + `/allProducts?${params.toString()}`;
       },
     }),
     getproductsbyId: build.query({
       query: (id) => ({
-        url: "/users/products/" + id,
+        url: USERS_URL + "/products/" + id,
         method: "GET",
       }),
     }),
     getproductsbyCategory: build.query({
       query: (category) => ({
-        url: "/users/products/category/" + category,
+        url: USERS_URL + "/products/category/" + category,
         method: "GET",
       }),
     }),
     getproductsbyBrand: build.query({
       query: (brand) => ({
-        url: "/users/products/brand/" + brand,
+        url: USERS_URL + "/products/brand/" + brand,
         method: "GET",
       }),
     }),
     getorders: build.query({
       query: (email) => ({
-        url: "/users/orders/" + email,
+        url: USERS_URL + "/orders/" + email,
         method: "GET",
       }),
     }),
     postorder: build.mutation({
       query: ({method, items, total, address, user}) => ({
-        url: "/users/post/order/",
+        url: USERS_URL + "/post/order/",
         method: "POST",
         body: {method, items, total, address, user},
       }),
     }),
     getorderById: build.query({
       query: (id) => ({
-        url: "/users/orders/order/" + id,
+        url: USERS_URL + "/orders/order/" + id,
         method: "GET",
       }),
     }),

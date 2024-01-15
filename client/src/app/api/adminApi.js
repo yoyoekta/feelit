@@ -1,3 +1,4 @@
+import { ADMIN_URL } from "../../constants";
 import { apiSlice } from "./apiSlice";
 
 const adminApi = apiSlice.injectEndpoints({
@@ -5,40 +6,40 @@ const adminApi = apiSlice.injectEndpoints({
   endpoints: (build) => ({
     addproduct: build.mutation({
       query: ({name, category, brand, description, image, price, size, qty}) => ({
-        url: 'admin/addProduct',
+        url: ADMIN_URL + '/addProduct',
         method: 'POST',
         body: {name, category, brand, description, image, price, size, qty},
       }),
     }),
     editproduct: build.mutation({
       query: ({id, name, category, brand, description, image, price, size, qty}) => ({
-        url: 'admin/edit/' + id,
+        url: ADMIN_URL + '/edit/' + id,
         method: 'PUT',
         body: {name, category, brand, description, image, price, size, qty},
       })
     }),
     deleteproduct: build.mutation({
       query: (id) => ({
-        url: 'admin/delete/' + id,
+        url: ADMIN_URL + '/delete/' + id,
         method: 'DELETE',
       })
     }),
     adduser: build.mutation({
       query: ({username, email, password}) => ({
-        url: 'admin/addUser',
+        url: ADMIN_URL + '/addUser',
         method: 'POST',
         body: {username, email, password},
       }),
     }),
     getusers: build.query({
       query: () => ({
-        url: 'admin/allUsers',
+        url: ADMIN_URL + '/allUsers',
         method: 'GET',
       }),
     }),
     getallorders: build.query({
       query: () => ({
-        url: 'admin/allOrders',
+        url: ADMIN_URL + '/allOrders',
         method: 'GET',
       }),
     }),

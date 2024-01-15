@@ -1,24 +1,25 @@
+import { AUTH_URL } from "../../constants";
 import { apiSlice } from "./apiSlice";
 
 const authApi = apiSlice.injectEndpoints({
   endpoints: (build) => ({
     register: build.mutation({
       query: ({username, email, password}) => ({
-        url: 'auth/register',
+        url: AUTH_URL + '/register',
         method: 'POST',
         body: {username, email, password},
       }),
     }),
     login: build.mutation({
       query: ({email, password}) => ({
-        url: 'auth/login',
+        url: AUTH_URL + '/login',
         method: 'POST',
         body: {email, password},
       }),
     }),
     logout: build.mutation({
       query: () => ({
-        url: 'auth/logout',
+        url: AUTH_URL + '/logout',
         method: 'POST',
       }),
     }),
