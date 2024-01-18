@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const Carousel = () => {
   return (
     <div className="max-w-7xl mx-auto sm:h-screen">
-      <div className="flex flex-col-reverse justify-center pb-3 sm:flex-row sm:h-full">
+      <div className="flex flex-col-reverse p-6 justify-center pb-3 sm:flex-row sm:h-full">
         <div className="sm:static sm:px-1 sm:transform-none flex-1 sm:p-5 flex flex-col justify-center items-center space-y-4">
           <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold text-primary text-center sm:text-left w-full font-serif">
             Discover the fragrance of Elegance

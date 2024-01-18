@@ -118,6 +118,26 @@ const getProductsByBrand = async (req, res) => {
   }
 };
 
+const getNewArrivals = async (req, res) => {
+  try {
+    await connectDB();
+    const newarrivals = await Product.find({ isnew: true });
+    console.log(newarrivals);
+    return res.status(200).json({
+      success: true,
+      message: "New Arrivals found",
+      newarrivals,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "Error occurred in fetching new arrivals",
+      err,
+    });
+  }
+};
+
 const getOrders = async (req, res) => {
   try {
     await connectDB();
@@ -230,6 +250,7 @@ module.exports = {
   getProductsById,
   getProductsByCategory,
   getProductsByBrand,
+  getNewArrivals,
   getOrders,
   getOrderById,
   postOrder,

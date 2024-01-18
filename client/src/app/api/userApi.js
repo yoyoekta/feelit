@@ -40,6 +40,12 @@ const userApi = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getNewArrivals: build.query({
+      query: () => ({
+        url: USERS_URL + "/newarrivals",
+        method: "GET"
+      })
+    }),
     getorders: build.query({
       query: (email) => ({
         url: USERS_URL + "/orders/" + email,
@@ -76,6 +82,7 @@ export const {
   useGetproductsbyIdQuery,
   useGetproductsbyCategoryQuery,
   useGetproductsbyBrandQuery,
+  useGetNewArrivalsQuery,
   useGetordersQuery,
   usePostorderMutation,
   useGetorderByIdQuery,

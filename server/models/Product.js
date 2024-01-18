@@ -34,6 +34,14 @@ const productSchema = new Schema({
         type: Number,
         required: [true, "Product quantity is required"],
     },
+    isnew: {
+        type: Boolean,
+        default: false,
+    },
+    isfeatured: {
+        type: Boolean,
+        default: false,
+    }
 }, {timestamps:true});
 
 module.exports = mongoose.model("Product", productSchema);
