@@ -7,16 +7,16 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <div className="bg-bgcolor text-color">
-      <div className="max-w-7xl py-10 container mx-auto px-4 md:px-6 grid md:grid-cols-5 gap-6 justify-around">
+      <div className="max-w-7xl py-10 container mx-auto px-4 md:px-6 grid md:grid-cols-4 gap-6 justify-around">
         {/* <div className=""> */}
         <img src={Logo} alt="logo" className="w-40 mx-auto" />
         {/* </div> */}
 
-        <div className="md:col-span-2 flex flex-col justify-center">
+        <div className="flex flex-col">
           <h3 className="text-2xl text-primary font-bold pb-2">Address</h3>
-          <div className="flex flex-col space-y-2 text-sm md:text-base">
+          <div className="flex flex-col space-y-2 text-sm sm:text-base">
             <div className="flex gap-4 items-center ">
-              <FaShop className="text-2xl" />
+              <FaShop className="text-xl md:text-base" />
               <p>Shop No. XYZ, ABC</p>
             </div>
 
@@ -32,8 +32,8 @@ const Footer = () => {
           </div>
         </div>
         <div className="flex flex-col">
-          <h3 className="text-2xl text-primary font-bold">Quick Links</h3>
-          <ul className="flex flex-col text-sm md:text-base text-white ">
+          <h3 className="text-2xl text-primary font-bold pb-2">Quick Links</h3>
+          <ul className="flex flex-col space-y-1 text-sm sm:text-base text-white ">
             <li>
               <Link to="/explore" className="hover:text-secondary">
                 Explore
@@ -57,8 +57,8 @@ const Footer = () => {
           </ul>
         </div>
         <div className="flex flex-col">
-          <h3 className="text-2xl text-primary font-bold">Account</h3>
-          <ul className="flex flex-col text-sm md:text-base text-white">
+          <h3 className="text-2xl text-primary font-bold pb-2">Account</h3>
+          <ul className="flex flex-col space-y-1 text-sm sm:text-base text-white">
             <li>
               <Link to="/auth/register" className="hover:text-secondary">
                 Sign Up
