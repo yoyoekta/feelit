@@ -43,8 +43,8 @@ Contributions are welcomed from the community to improve and enhance the platfor
 
 Before contributing or adding a new feature, please make sure you have already installed the following tools:
 
-- [NodeJs](https://nodejs.org/en/download/) (Works with Node LTS version v18.16.1)
-- [MongoDB](https://www.mongodb.com/home) (v6+)
+- [NodeJs](https://nodejs.org/en/download/) 
+- [MongoDB](https://www.mongodb.com/home) 
 
 ### Steps to set up project locally
 Step 1: Fork the Repository
